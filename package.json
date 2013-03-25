@@ -1,0 +1,39 @@
+{
+  "name": "symfio-contrib-mongoose"
+, "version": "0.1.0"
+, "description": "Connect to MongoDB database using mongoose module."
+, "keywords": ["symfio-plugin", "symfio-contrib", "mongoose"]
+, "homepage": "http://symf.io/plugins/contrib-mongoose"
+, "bugs": {
+    "url": "https://github.com/symfio/symfio-contrib-mongoose/issues"
+  , "email": "webmaster@rithis.com"
+  }
+, "author": {
+    "name": "Vyacheslav Slinko"
+  , "email": "vyacheslav.slinko@gmail.com"
+  }
+, "main": "lib/mongoose"
+, "repository": {
+    "type": "git"
+  , "url": "git://github.com/symfio/symfio-contrib-mongoose.git"
+  }
+, "scripts": {
+    "test": "grunt simplemocha"
+  }
+, "dependencies": {
+    "mongoose": "~3.6"
+  }
+, "devDependencies": {
+    "symfio": "~1.0"
+  , "symfio-suite": "~1.0"
+  , "symfio-contrib-express": "~0.1"
+  , "grunt": "~0.4"
+  , "grunt-simple-mocha": "~0.3"
+  , "grunt-coffeelint": "~0.0"
+  }
+, "engines": {
+    "node": "~0.8"
+  , "npm": "~1.2"
+  , "coffee-script": "~1.6"
+  }
+}
