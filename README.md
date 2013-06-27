@@ -12,22 +12,14 @@ symfio = require "symfio"
 
 container = symfio "example", __dirname
 
-loader = container.get "loader"
+container.use require "symfio-contrib-mongoose"
 
-loader.use require "symfio-contrib-mongoose"
+container.use (model) ->
+  model "News", "news", (mongoose) ->
+    NewsSchema = new mongoose.Schema
+      title: String
 
-loader.use (container, callback) ->
-  connection = container.get "connection"
-  mongoose = container.get "mongoose"
-
-  NewsSchema = new mongoose.Schema
-    title: String
-
-  News = connection.model "news", NewsSchema
-
-  callback()
-
-loader.load()
+container.load()
 ```
 
 ## Provides
@@ -35,9 +27,9 @@ loader.load()
 * __connection__ — Mongoose connection instance.
 * __mongoose__ — `mongoose` module.
 * __mongodb__ — `mongodb` module.
+* __model__ — Model define helper. First argument is container key, second
+  argument is collection name, last argument is factory.
 
 ## Can be configured
 
-* __connection string__ - Default value received from `process.env.MONGOHQ_URL`.
-  If `process.env.MONGOHQ_URL` is undefined then default value is
-  `"mongodb://localhost/#{name}"`.
+* __connection string__ - Default value is `"mongodb://localhost/#{name}"`.

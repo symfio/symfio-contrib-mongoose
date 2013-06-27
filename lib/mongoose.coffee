@@ -1,28 +1,27 @@
 mongoose = require "mongoose"
+w = require "when"
 
 
-module.exports = (container, callback) ->
-  unloader = container.get "unloader"
-  logger = container.get "logger"
-  name = container.get "name"
-
-  logger.info "loading plugin", "contrib-mongoose"
-
-  connection = mongoose.createConnection()
-
-  container.set "connection", connection
+module.exports = (container, connectionString, name = "test") ->
   container.set "mongoose", mongoose
   container.set "mongodb", mongoose.mongo
 
-  connectionString = container.get "connection string",
-    process.env.MONGOHQ_URL or "mongodb://localhost/#{name}"
+  unless connectionString
+    container.set "connectionString", "mongodb://localhost/#{name}"
 
-  connection.open connectionString, (err) ->
-    logger.error err if err
-    callback()
+  container.set "connection", (connectionString, mongoose) ->
+    deffered = w.defer()
 
-  unloader.register (callback) ->
-    return callback() unless connection.readyState is 1
+    connection = mongoose.createConnection()
+    connection.open connectionString, (err) ->
+      return deffered.reject err if err
+      deffered.resolve connection
 
-    connection.close ->
-      callback()
+    deffered.promise
+
+  container.set "model", (container) ->
+    (name, collectionName, factory) ->
+      container.set name, (connection) ->
+        container.call(factory).then (schema) ->
+          container.set "#{name}Schema", schema
+          connection.model collectionName, schema

@@ -1,34 +1,25 @@
 symfio = require "symfio"
+nodefn = require "when/node/function"
 
 module.exports = container = symfio "example", __dirname
-loader = container.get "loader"
 
-loader.use require "symfio-contrib-express"
-loader.use require "../lib/mongoose"
+container.use require "symfio-contrib-express"
+container.use require ".."
 
-loader.use (container, callback) ->
-  connection = container.get "connection"
-  mongoose = container.get "mongoose"
-  unloader = container.get "unloader"
-  app = container.get "app"
+container.use (container, model, get) ->
+  model "Fruit", "fruits", (mongoose) ->
+    new mongoose.Schema
+      name: String
 
-  FruitSchema = new mongoose.Schema
-    name: String
+  get "/", (Fruit) ->
+    (req, res) ->
+      Fruit.findOne (err, fruit) ->
+        return res.send 500 if err
+        return res.send 404 unless fruit
+        res.send fruit
 
-  Fruit = connection.model "fruits", FruitSchema
+  container.call (Fruit) ->
+    fruit = new Fruit name: "Apple"
+    nodefn.call fruit.save.bind fruit
 
-  fruit = new Fruit name: "Apple"
-  fruit.save ->
-    callback()
-
-  app.get "/", (req, res) ->
-    Fruit.findOne (err, fruit) ->
-      return res.send 500 if err
-      return res.send 404 unless fruit
-      res.send fruit
-
-  unloader.register (callback) ->
-    connection.db.dropDatabase ->
-      callback()
-
-loader.load() if require.main is module
+container.load() if require.main is module

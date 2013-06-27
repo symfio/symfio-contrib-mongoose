@@ -18,22 +18,25 @@
   , "url": "git://github.com/symfio/symfio-contrib-mongoose.git"
   }
 , "scripts": {
-    "test": "grunt simplemocha"
+    "test": "npm install && grunt"
   }
 , "dependencies": {
     "mongoose": "~3.6"
+  , "when": "~2.1"
   }
 , "devDependencies": {
-    "symfio": "~1.0"
-  , "symfio-suite": "~1.0"
-  , "symfio-contrib-express": "~0.1"
+    "symfio": "~2.0"
+  , "symfio-contrib-express": "~2.0"
+  , "chai": "~1.6"
+  , "chai-as-promised": "~3.3"
+  , "chai-http": "~0.3"
   , "grunt": "~0.4"
   , "grunt-simple-mocha": "~0.4"
   , "grunt-coffeelint": "~0.0"
   }
 , "engines": {
-    "node": "~0.8"
-  , "npm": "~1.2"
+    "node": ">=0.8"
+  , "npm": ">=1.2"
   , "coffee-script": "~1.6"
   }
 }
