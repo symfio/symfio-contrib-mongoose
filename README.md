@@ -1,6 +1,6 @@
 # symfio-contrib-mongoose
 
-> Mongoose plugin.
+> Mongoose plugin for Symfio.
 
 [![Build Status](http://teamcity.rithis.com/httpAuth/app/rest/builds/buildType:id:bt13,branch:master/statusIcon?guest=1)](http://teamcity.rithis.com/viewType.html?buildTypeId=bt13&guest=1)
 [![Dependency Status](https://gemnasium.com/symfio/symfio-contrib-mongoose.png)](https://gemnasium.com/symfio/symfio-contrib-mongoose)
