@@ -10,11 +10,12 @@ describe "contrib-mongoose example", ->
   container = require "../example"
   container.set "env", "test"
 
+  before (callback) ->
+    container.promise.should.notify callback
+
   describe "GET /", ->
     it "should respond with apple", (callback) ->
-      container.promise.then ->
-        container.get("app")
-      .then (app) ->
+      container.get("app").then (app) ->
         deferred = w.defer()
         chai.request(app).get("/").res deferred.resolve
         deferred.promise
