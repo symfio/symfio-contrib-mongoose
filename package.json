@@ -1,7 +1,7 @@
 {
   "name": "symfio-contrib-mongoose"
 , "version": "2.0.0-beta.3"
-, "description": "Connect to MongoDB database using mongoose module."
+, "description": "Mongoose plugin."
 , "keywords": ["symfio-plugin", "symfio-contrib", "mongoose"]
 , "homepage": "http://symf.io/plugins/contrib-mongoose"
 , "bugs": {
@@ -22,15 +22,15 @@
   }
 , "dependencies": {
     "mongoose": "~3.6"
-  , "when": "~2.1"
+  , "when": "~2.2"
   }
 , "devDependencies": {
     "symfio": "~2.0"
   , "symfio-contrib-express": "~2.0"
   , "symfio-contrib-winston": "~2.0"
-  , "chai": "~1.6"
+  , "chai": "~1.7"
   , "chai-as-promised": "~3.3"
-  , "chai-http": "~0.3"
+  , "chai-http": "~0.4"
   , "grunt": "~0.4"
   , "grunt-simple-mocha": "~0.4"
   , "grunt-coffeelint": "~0.0"

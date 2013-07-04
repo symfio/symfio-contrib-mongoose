@@ -1,6 +1,6 @@
 # symfio-contrib-mongoose
 
-> Connect to MongoDB database using mongoose module.
+> Mongoose plugin.
 
 [![Build Status](http://teamcity.rithis.com/httpAuth/app/rest/builds/buildType:id:bt13,branch:master/statusIcon?guest=1)](http://teamcity.rithis.com/viewType.html?buildTypeId=bt13&guest=1)
 [![Dependency Status](https://gemnasium.com/symfio/symfio-contrib-mongoose.png)](https://gemnasium.com/symfio/symfio-contrib-mongoose)
@@ -12,24 +12,35 @@ symfio = require "symfio"
 
 container = symfio "example", __dirname
 
-container.use require "symfio-contrib-mongoose"
+container.inject require "symfio-contrib-mongoose"
 
-container.use (model) ->
+container.inject (model) ->
   model "News", "news", (mongoose) ->
-    NewsSchema = new mongoose.Schema
+    new mongoose.Schema
       title: String
-
-container.load()
 ```
 
-## Provides
+## Configuration
 
-* __connection__ — Mongoose connection instance.
-* __mongoose__ — `mongoose` module.
-* __mongodb__ — `mongodb` module.
-* __model__ — Model define helper. First argument is container key, second
-  argument is collection name, last argument is factory.
+### `connectionString`
 
-## Can be configured
+Default value is `"mongodb://localhost/#{name}"`.
 
-* __connection string__ - Default value is `"mongodb://localhost/#{name}"`.
+## Services
+
+### `mongoose`
+
+Original `mongoose` module.
+
+### `mongodb`
+
+Original `mongodb` module.
+
+### `connection`
+
+Mongoose connection instance.
+
+### `model`
+
+Model define helper. First argument is container key, second argument is
+collection name, last argument is a model factory.

@@ -1,26 +1,38 @@
 symfio = require "symfio"
 nodefn = require "when/node/function"
+w = require "when"
 
 module.exports = container = symfio "example", __dirname
 
-container.use require "symfio-contrib-winston"
-container.use require "symfio-contrib-express"
-container.use require ".."
+module.exports.promise = container.injectAll [
+  require "symfio-contrib-winston"
+  require "symfio-contrib-express"
+  require ".."
 
-container.use (container, model, get) ->
-  model "Fruit", "fruits", (mongoose) ->
-    new mongoose.Schema
-      name: String
+  (container, model, get) ->
+    model "Fruit", "fruits", (mongoose) ->
+      new mongoose.Schema
+        name: String
 
-  get "/", (Fruit) ->
-    (req, res) ->
-      Fruit.findOne (err, fruit) ->
-        return res.send 500 if err
-        return res.send 404 unless fruit
-        res.send fruit
+    get "/", (Fruit) ->
+      (req, res) ->
+        Fruit.find (err, fruits) ->
+          return res.send 500 if err
+          return res.send 404 unless fruits
+          res.send fruits
 
-  container.call (Fruit) ->
-    fruit = new Fruit name: "Apple"
-    nodefn.call fruit.save.bind fruit
+    container.inject (connection, Fruit) ->
+      deffered = w.defer()
 
-container.load() if require.main is module
+      connection.db.dropDatabase ->
+        deffered.resolve()
+
+      deffered.promise.then ->
+        fruit = new Fruit name: "Apple"
+        nodefn.call fruit.save.bind fruit
+]
+
+
+if require.main is module
+  container.get("listener").then (listener) ->
+    listener.listen()

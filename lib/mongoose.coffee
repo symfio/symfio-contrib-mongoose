@@ -29,6 +29,6 @@ module.exports = (container) ->
       logger.debug "define mongoose model", name: name
 
       container.set name, (connection) ->
-        container.call(factory).then (schema) ->
+        container.inject(factory).then (schema) ->
           container.set "#{name}Schema", schema
           connection.model collectionName, schema
