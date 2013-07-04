@@ -1,7 +1,9 @@
 w = require "when"
 
 
-module.exports = (container, connectionString, name = "test") ->
+module.exports = (container, name = "test") ->
+  container.unless "connectionString", "mongodb://localhost/#{name}"
+
   container.set "mongoose", (logger) ->
     logger.debug "require module", name: "mongoose"
     require "mongoose"
@@ -29,7 +31,3 @@ module.exports = (container, connectionString, name = "test") ->
         container.call(factory).then (schema) ->
           container.set "#{name}Schema", schema
           connection.model collectionName, schema
-
-
-  unless connectionString
-    container.set "connectionString", "mongodb://localhost/#{name}"
