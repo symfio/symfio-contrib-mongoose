@@ -1,8 +1,9 @@
 w = require "when"
 
 
-module.exports = (container, name = "test") ->
-  container.unless "connectionString", "mongodb://localhost/#{name}"
+module.exports = (container) ->
+  container.unless "connectionString", (name) ->
+    "mongodb://localhost/#{name}"
 
   container.set "mongoose", (logger) ->
     logger.debug "require module", name: "mongoose"
