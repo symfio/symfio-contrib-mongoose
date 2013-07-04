@@ -27,6 +27,7 @@
 , "devDependencies": {
     "symfio": "~2.0"
   , "symfio-contrib-express": "~2.0"
+  , "symfio-contrib-winston": "~2.0"
   , "chai": "~1.6"
   , "chai-as-promised": "~3.3"
   , "chai-http": "~0.3"
@@ -38,5 +39,6 @@
     "node": ">=0.8"
   , "npm": ">=1.2"
   , "coffee-script": "~1.6"
+  , "grunt-cli": "~0.4"
   }
 }

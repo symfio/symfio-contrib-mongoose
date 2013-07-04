@@ -1,15 +1,17 @@
-mongoose = require "mongoose"
 w = require "when"
 
 
 module.exports = (container, connectionString, name = "test") ->
-  container.set "mongoose", mongoose
-  container.set "mongodb", mongoose.mongo
+  container.set "mongoose", (logger) ->
+    logger.debug "require module", name: "mongoose"
+    require "mongoose"
 
-  unless connectionString
-    container.set "connectionString", "mongodb://localhost/#{name}"
+  container.set "mongodb", (mongoose) ->
+    mongoose.mongo
 
-  container.set "connection", (connectionString, mongoose) ->
+  container.set "connection", (logger, connectionString, mongoose) ->
+    logger.info "connect to mongodb", connectionString: connectionString
+
     deffered = w.defer()
 
     connection = mongoose.createConnection()
@@ -19,9 +21,15 @@ module.exports = (container, connectionString, name = "test") ->
 
     deffered.promise
 
-  container.set "model", (container) ->
+  container.set "model", (container, logger) ->
     (name, collectionName, factory) ->
+      logger.debug "define mongoose model", name: name
+
       container.set name, (connection) ->
         container.call(factory).then (schema) ->
           container.set "#{name}Schema", schema
           connection.model collectionName, schema
+
+
+  unless connectionString
+    container.set "connectionString", "mongodb://localhost/#{name}"

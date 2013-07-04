@@ -3,6 +3,7 @@ nodefn = require "when/node/function"
 
 module.exports = container = symfio "example", __dirname
 
+container.use require "symfio-contrib-winston"
 container.use require "symfio-contrib-express"
 container.use require ".."
 
