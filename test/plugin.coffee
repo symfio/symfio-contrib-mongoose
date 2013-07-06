@@ -1,15 +1,10 @@
-symfio = require "symfio"
-chai = require "chai"
+suite = require "symfio-suite"
 
 
 describe "contrib-mongoose()", ->
-  chai.use require "chai-as-promised"
-  chai.should()
+  it = suite.plugin [
+    require ".."
+  ]
 
-  container = symfio "test", __dirname
-  container.inject require ".."
-
-  it "should generate connection string using name value", (callback) ->
-    container.get("connectionString").then (connectionString) ->
-      connectionString.should.equal "mongodb://localhost/test"
-    .should.notify callback
+  it "should generate connection string using name value", (connectionString) ->
+    connectionString.should.equal "mongodb://localhost/test"
