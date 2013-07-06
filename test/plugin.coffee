@@ -2,7 +2,7 @@ symfio = require "symfio"
 chai = require "chai"
 
 
-describe "contrib-mongoose plugin", ->
+describe "contrib-mongoose()", ->
   chai.use require "chai-as-promised"
   chai.should()
 
