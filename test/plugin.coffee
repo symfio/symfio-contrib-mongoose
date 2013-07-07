@@ -2,44 +2,50 @@ suite = require "symfio-suite"
 
 
 describe "contrib-mongoose()", ->
-  it = suite.plugin [
-    require ".."
-  ]
+  it = suite.plugin (container, containerStub) ->
+    require("..") containerStub
+
+    container.set "connection", (sandbox) ->
+      connection =
+        open: sandbox.stub()
+        model: sandbox.stub()
+      connection.open.yields()
+      connection
+
+    container.set "mongoose", (sandbox, connection) ->
+      mongoose = createConnection: sandbox.stub()
+      mongoose.createConnection.returns connection
+      mongoose
 
   describe "container.unless connectionString", ->
     it "should generate connection string using name value",
-      (connectionString) ->
-        connectionString.should.equal "mongodb://localhost/test"
+      (containerStub) ->
+        factory = containerStub.unless.get "connectionString"
+        factory("test").should.equal "mongodb://localhost/test"
 
   describe "container.set mongoose", ->
-    it "should define", (container) ->
-      container.has("mongoose").should.be.true
+    it "should define", (containerStub) ->
+      containerStub.set.should.be.calledWith "mongoose"
 
   describe "container.set mongodb", ->
-    it "should define", (container) ->
-      container.has("mongodb").should.be.true
+    it "should define", (containerStub) ->
+      containerStub.set.should.be.calledWith "mongodb"
 
   describe "container.set connection", ->
-    it "should connect", (container) ->
-      container.set "connectionStub", (sandbox) ->
-        connectionStub = open: sandbox.stub()
-        connectionStub.open.yields()
-        connectionStub
-
-      container.set "mongoose", (sandbox, connectionStub) ->
-        mongoose = createConnection: sandbox.stub()
-        mongoose.createConnection.returns connectionStub
-        mongoose
-
-      container.inject (connection, connectionString) ->
-        connection.open.should.be.calledOnce
-        connection.open.should.be.calledWith connectionString
+    it "should connect", (containerStub, logger, mongoose, connection) ->
+      factory = containerStub.set.get "connection"
+      factory logger, "connectionString", mongoose
+      connection.open.should.be.calledOnce
+      connection.open.should.be.calledWith "connectionString"
 
   describe "container.set model", ->
-    it "should define model", (model, container) ->
-      model "Model", "collection", (mongoose) ->
-        new mongoose.Schema
-          abcde: String
-
-      container.inject (Model) ->
-        Model.schema.tree.should.have.property "abcde"
+    it "should define model", (containerStub, logger, connection) ->
+      factory = containerStub.set.get "model"
+      model = factory containerStub, logger
+      model "Model", "collection", "factory"
+      modelFactory = containerStub.set.get "Model"
+      modelFactory connection
+      containerStub.inject.promise.then.yield "schema"
+      containerStub.inject.should.be.calledWith "factory"
+      containerStub.set.get("ModelSchema").should.equal "schema"
+      connection.model.should.calledWith "collection", "schema"
