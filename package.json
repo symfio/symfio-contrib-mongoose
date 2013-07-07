@@ -1,6 +1,6 @@
 {
   "name": "symfio-contrib-mongoose"
-, "version": "2.0.2"
+, "version": "2.0.3"
 , "description": "Mongoose plugin for Symfio."
 , "keywords": ["symfio-plugin", "symfio-contrib", "mongoose"]
 , "homepage": "http://symf.io/plugins/contrib-mongoose"
