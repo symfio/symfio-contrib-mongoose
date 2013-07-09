@@ -17,24 +17,24 @@ describe "contrib-mongoose()", ->
       mongoose.createConnection.returns connection
       mongoose
 
+  describe "container.require mongoose", ->
+    it "should define", (containerStub) ->
+      containerStub.require.should.be.calledWith "mongoose"
+
   describe "container.unless connectionString", ->
     it "should generate connection string using name value",
       (containerStub) ->
         factory = containerStub.unless.get "connectionString"
         factory("test").should.equal "mongodb://localhost/test"
 
-  describe "container.set mongoose", ->
-    it "should define", (containerStub) ->
-      containerStub.set.should.be.calledWith "mongoose"
-
   describe "container.set mongodb", ->
     it "should define", (containerStub) ->
       containerStub.set.should.be.calledWith "mongodb"
 
   describe "container.set connection", ->
-    it "should connect", (containerStub, logger, mongoose, connection) ->
+    it "should connect", (containerStub, logger, mongoose, connection, w) ->
       factory = containerStub.set.get "connection"
-      factory logger, "connectionString", mongoose
+      factory logger, "connectionString", mongoose, w
       connection.open.should.be.calledOnce
       connection.open.should.be.calledWith "connectionString"
 

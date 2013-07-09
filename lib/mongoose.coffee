@@ -1,18 +1,13 @@
-w = require "when"
-
-
 module.exports = (container) ->
+  container.require "mongoose"
+
   container.unless "connectionString", (name) ->
     "mongodb://localhost/#{name}"
-
-  container.set "mongoose", (logger) ->
-    logger.debug "require module", name: "mongoose"
-    require "mongoose"
 
   container.set "mongodb", (mongoose) ->
     mongoose.mongo
 
-  container.set "connection", (logger, connectionString, mongoose) ->
+  container.set "connection", (logger, connectionString, mongoose, w) ->
     logger.info "connect to mongodb", connectionString: connectionString
 
     deffered = w.defer()
