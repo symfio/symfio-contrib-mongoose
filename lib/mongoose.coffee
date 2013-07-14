@@ -1,4 +1,5 @@
 module.exports = (container) ->
+  container.require require
   container.require "mongoose"
 
   container.unless "connectionString", (name) ->
