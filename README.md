@@ -2,7 +2,10 @@
 
 > Mongoose plugin for Symfio.
 
-[![Build Status](https://travis-ci.org/symfio/symfio-contrib-mongoose.png?branch=master)](https://travis-ci.org/symfio/symfio-contrib-mongoose) [![Dependency Status](https://gemnasium.com/symfio/symfio-contrib-mongoose.png)](https://gemnasium.com/symfio/symfio-contrib-mongoose)
+[![Build Status](https://travis-ci.org/symfio/symfio-contrib-mongoose.png?branch=master)](https://travis-ci.org/symfio/symfio-contrib-mongoose)
+[![Coverage Status](https://coveralls.io/repos/symfio/symfio-contrib-mongoose/badge.png?branch=master)](https://coveralls.io/r/symfio/symfio-contrib-mongoose?branch=master)
+[![Dependency Status](https://gemnasium.com/symfio/symfio-contrib-mongoose.png)](https://gemnasium.com/symfio/symfio-contrib-mongoose)
+[![NPM version](https://badge.fury.io/js/symfio-contrib-mongoose.png)](http://badge.fury.io/js/symfio-contrib-mongoose)
 
 ## Usage
 
